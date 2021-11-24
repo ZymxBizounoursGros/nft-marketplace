@@ -23,7 +23,7 @@ export const decryptCookie = (cookie: string) => {
     }
 }
 
-export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?:Function) => {
+export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDappQR?:Function) => {
     const params = new URLSearchParams(window.location.search);
     if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)) {
         if (params.get('walletId') && params.get('walletId') !== window.walletId) {
@@ -33,9 +33,11 @@ export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?
         const user = await getUser(window.walletId);
         setWalletUser(user);
         Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
-        if (setIsUserFromDapp) setIsUserFromDapp(true)
     }
     if (!window.isRNApp && params.get('walletId')) {
         setWalletUser(null);
+    }
+    if (window.isRNApp && window.history.length===1 && setIsUserFromDappQR){
+        setIsUserFromDappQR(true)
     }
 }
