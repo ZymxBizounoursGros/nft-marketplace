@@ -136,8 +136,10 @@ const NFTPage: React.FC<NFTPageProps> = ({
       const data = res.serieData?.filter(x => x.owner === user.walletId) || []
       const canUserBuyAgainValue = data.length === 0
       setCanUserBuyAgain(canUserBuyAgainValue)
+      return canUserBuyAgainValue
     }catch(err){
       setCanUserBuyAgain(false)
+      return false
     }
   }
 
@@ -178,7 +180,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
     }
   };
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     //get a random row to buy if same price
     const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
       [NFT]
@@ -193,8 +195,14 @@ const NFTPage: React.FC<NFTPageProps> = ({
           x.price === arr[0].price &&
           x.priceTiime === arr[0].priceTiime
         )
-    setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
-    setExp(2);
+    let canBuyAgain = true
+    if (isVR){
+      canBuyAgain = await loadCanUserBuyAgain()
+    }
+    if (canBuyAgain){
+      setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
+      setExp(2);
+    }
   };
 
   return (
