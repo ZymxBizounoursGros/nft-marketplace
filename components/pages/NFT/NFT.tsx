@@ -17,7 +17,7 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
-import { getOwnedNFTS } from 'actions/nft';
+import { getNFT, getOwnedNFTS } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
@@ -52,7 +52,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
     NFT.categories.findIndex(x => x.code === "vr") !== -1 || 
     NFT.serieId === "1390370908" || 
     NFT.serieId === "3350596370" || 
-    NFT.serieId === "3520758849"
+    NFT.serieId === "3520758849" //test
   ) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
@@ -132,11 +132,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
 
   const loadCanUserBuyAgain = async () => {
     try{
-      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, false)
-      const ownedIds: string[] = []
-      res.data.forEach(x => x.serieData?.map(x => ownedIds.push(x.id)))
-      const nftOwnedInSeries = NFT.serieData?.filter(x => ownedIds.includes(x.id)) || []
-      const canUserBuyAgainValue = nftOwnedInSeries?.length === 0
+      const res = await getNFT(NFT.id, false, null, undefined, false, undefined)
+      const data = res.serieData?.filter(x => x.owner === user.walletId) || []
+      const canUserBuyAgainValue = data.length === 0
       setCanUserBuyAgain(canUserBuyAgainValue)
     }catch(err){
       setCanUserBuyAgain(false)
