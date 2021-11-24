@@ -17,7 +17,7 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
-import { getNFT, getOwnedNFTS } from 'actions/nft';
+import { getNFT } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
