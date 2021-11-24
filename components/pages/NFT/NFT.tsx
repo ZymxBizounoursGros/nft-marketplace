@@ -52,7 +52,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
     NFT.categories.findIndex(x => x.code === "vr") !== -1 || 
     NFT.serieId === "1390370908" || 
     NFT.serieId === "3350596370" || 
-    NFT.serieId === "3520758849" //test
+    NFT.serieId === "188913946" //test
   ) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
